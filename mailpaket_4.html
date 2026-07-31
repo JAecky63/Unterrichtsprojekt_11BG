@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Nordstern ServiceDesk – Mailpaket 4</title>
+  <style>
+:root {
+  --bg: #eef2f6;
+  --panel: #ffffff;
+  --ink: #1f2933;
+  --muted: #66788a;
+  --line: #d7e0e8;
+  --accent: #0b5f9e;
+  --accent-dark: #08466f;
+  --accent-soft: #e8f2fa;
+  --shadow: 0 10px 28px rgba(31, 41, 51, 0.10);
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+}
+button { font: inherit; }
+.app {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+.topbar {
+  background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 22px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.16);
+}
+.brand { display: flex; align-items: center; gap: 13px; min-width: 0; }
+.logo {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: grid; place-items: center;
+  background: rgba(255,255,255,.16);
+  border: 1px solid rgba(255,255,255,.35);
+  font-weight: 700; letter-spacing: .04em;
+}
+.brand h1 { margin: 0; font-size: 1.15rem; line-height: 1.15; }
+.brand p { margin: 4px 0 0; font-size: .88rem; opacity: .9; }
+.readonly {
+  white-space: nowrap;
+  border: 1px solid rgba(255,255,255,.45);
+  border-radius: 999px;
+  padding: 7px 11px;
+  font-size: .82rem;
+  background: rgba(255,255,255,.12);
+}
+.workspace {
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 18px;
+  padding: 18px;
+  min-height: 0;
+}
+.inbox, .reader {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  min-height: 0;
+  overflow: hidden;
+}
+.inbox { display: flex; flex-direction: column; }
+.inbox-head {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--line);
+  background: #f9fbfd;
+}
+.inbox-head h2 { margin: 0; font-size: 1.04rem; }
+.inbox-head p { margin: 5px 0 0; color: var(--muted); font-size: .87rem; }
+.mail-list { overflow-y: auto; }
+.mail-item {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: white;
+  text-align: left;
+  padding: 14px 16px;
+  cursor: pointer;
+  color: inherit;
+}
+.mail-item:hover { background: #f7fafc; }
+.mail-item.active {
+  background: var(--accent-soft);
+  box-shadow: inset 4px 0 0 var(--accent);
+}
+.item-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.sender { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mail-id {
+  flex: 0 0 auto;
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--accent-dark);
+  background: #fff;
+  border: 1px solid #b9d0e1;
+  border-radius: 999px;
+  padding: 2px 7px;
+}
+.subject { margin-top: 6px; font-size: .92rem; font-weight: 600; line-height: 1.3; }
+.preview {
+  margin-top: 5px;
+  font-size: .82rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.reader { display: grid; grid-template-rows: auto 1fr auto; }
+.reader-head {
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid var(--line);
+}
+.reader-head h2 { margin: 0; font-size: 1.35rem; line-height: 1.28; }
+.meta-grid {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 5px 12px;
+  align-items: baseline;
+  font-size: .9rem;
+}
+.meta-label { color: var(--muted); }
+.meta-value { min-width: 0; overflow-wrap: anywhere; }
+.meta-date { grid-row: 1 / span 2; grid-column: 3; color: var(--muted); white-space: nowrap; }
+.message {
+  padding: 26px 28px 34px;
+  overflow-y: auto;
+  font-size: 1rem;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+.reader-foot {
+  border-top: 1px solid var(--line);
+  background: #f9fbfd;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.navgroup { display: flex; gap: 8px; }
+.navbtn {
+  border: 1px solid #b8c7d4;
+  background: white;
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.navbtn:hover:not(:disabled) { background: #eef4f8; }
+.navbtn:disabled { opacity: .45; cursor: default; }
+.progress { color: var(--muted); font-size: .87rem; }
+.hint {
+  margin: 0 18px 18px;
+  padding: 11px 13px;
+  border-radius: 9px;
+  background: #fff8df;
+  border: 1px solid #ead79d;
+  color: #5b4a12;
+  font-size: .84rem;
+  line-height: 1.4;
+}
+@media (max-width: 840px) {
+  .workspace { grid-template-columns: 1fr; }
+  .inbox { max-height: 42vh; }
+  .reader { min-height: 54vh; }
+  .meta-grid { grid-template-columns: auto 1fr; }
+  .meta-date { grid-column: 2; grid-row: auto; }
+  .readonly { display: none; }
+}
+@media print {
+  body { background: #fff; }
+  .topbar, .inbox, .reader-foot, .hint { display: none !important; }
+  .workspace { display: block; padding: 0; }
+  .reader { border: 0; box-shadow: none; }
+  .message { overflow: visible; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">NS</div>
+      <div>
+        <h1>Nordstern ServiceDesk · Mailpaket 4</h1>
+        <p>Fiktive Kundenservice-Inbox für das Unterrichtsprojekt</p>
+      </div>
+    </div>
+    <div class="readonly">Nur-Lese-Ansicht · 6 Nachrichten</div>
+  </header>
+
+  <main class="workspace">
+    <section class="inbox" aria-label="Posteingang">
+      <div class="inbox-head">
+        <h2>Posteingang</h2>
+        <p>Wähle eine Nachricht aus.</p>
+      </div>
+      <div id="mailList" class="mail-list"></div>
+      <p class="hint"><strong>Arbeitsauftrag:</strong> Übertrage die Mail-ID und deine Codierung in den Auswertungsbogen. Die Nachrichten können nicht beantwortet oder verändert werden.</p>
+    </section>
+
+    <article class="reader" aria-live="polite">
+      <div class="reader-head">
+        <h2 id="subject"></h2>
+        <div class="meta-grid">
+          <div class="meta-label">Von</div>
+          <div id="sender" class="meta-value"></div>
+          <div id="date" class="meta-date"></div>
+          <div class="meta-label">E-Mail</div>
+          <div id="email" class="meta-value"></div>
+        </div>
+      </div>
+      <div id="body" class="message"></div>
+      <div class="reader-foot">
+        <div class="navgroup">
+          <button id="prevBtn" class="navbtn" type="button">← Vorherige</button>
+          <button id="nextBtn" class="navbtn" type="button">Nächste →</button>
+        </div>
+        <div id="progress" class="progress"></div>
+      </div>
+    </article>
+  </main>
+</div>
+<script>
+const mails = [{"id": "M19", "sender": "Clara Neumann", "email": "clara.neumann@example.com", "subject": "Lieferadresse ergänzen", "date": "03.09.2026, 08:17", "body": "Guten Morgen,\n\nbei meiner Bestellung NS-260902-0903 fehlt in der Lieferadresse der Zusatz „Hinterhaus, 2. Stock“. Die Straße und Hausnummer sind korrekt.\n\nKönnen Sie den Adresszusatz noch ergänzen? Im Kundenkonto steht, dass die Bestellung noch nicht versendet wurde.\n\nVielen Dank\nClara Neumann"}, {"id": "M20", "sender": "Robin König", "email": "robin.koenig@example.com", "subject": "Rückgabe erledigt – danke für den unkomplizierten Service", "date": "03.09.2026, 09:22", "body": "Hallo,\n\ndie Rückgabe des ungeeigneten Headsets hat problemlos funktioniert, und die Erstattung war schon nach zwei Tagen auf meinem Konto. Das wollte ich gern positiv zurückmelden.\n\nSie können den Vorgang NS-260823-3416 damit als erledigt betrachten.\n\nViele Grüße\nRobin König"}, {"id": "M21", "sender": "Amira Özdemir", "email": "amira.oezdemir@example.com", "subject": "Newsletter abbestellen", "date": "03.09.2026, 10:35", "body": "Guten Tag,\n\nich möchte den Nordstern-Newsletter nicht mehr erhalten. Der Abmeldelink in der letzten E-Mail führt bei mir nur auf eine leere Seite.\n\nBitte entfernen Sie meine Adresse aus dem Verteiler und bestätigen Sie mir kurz die Abmeldung.\n\nFreundliche Grüße\nAmira Özdemir"}, {"id": "M22", "sender": "Kai Mertens", "email": "kai.mertens@example.com", "subject": "Unklare Angaben zum Bürostuhl „ErgoPlus“", "date": "03.09.2026, 11:46", "body": "Hallo,\n\nbei dem Bürostuhl „ErgoPlus“ steht einmal eine maximale Belastung von 120 Kilogramm und weiter unten in der Beschreibung von 150 Kilogramm. Das ist ziemlich ärgerlich, weil ich mich auf die Angaben verlassen können muss.\n\nWelcher Wert ist richtig? Bitte korrigieren Sie die Produktseite, damit andere Kunden nicht vor demselben Problem stehen.\n\nGruß\nKai Mertens"}, {"id": "M23", "sender": "Julia Kern", "email": "julia.kern@example.com", "subject": "Gutschein berücksichtigt, aber Rechnung wirkt trotzdem falsch", "date": "03.09.2026, 13:09", "body": "Guten Tag,\n\nich habe einen Gutschein über 20 Euro eingelöst. Im Kundenkonto wird der Gutschein angezeigt, auf der Rechnung steht jedoch zunächst der volle Warenwert von 84,90 Euro und darunter ein Zahlbetrag von 64,90 Euro.\n\nIst die Rechnung so korrekt, oder müsste der Warenwert bereits reduziert ausgewiesen werden? Ich möchte sie für eine Kostenerstattung bei meinem Arbeitgeber einreichen.\n\nVielen Dank für eine kurze Erklärung.\nJulia Kern"}, {"id": "M24", "sender": "Mehmet Arslan", "email": "mehmet.arslan@example.com", "subject": "Paket an unbekannte Person zugestellt", "date": "03.09.2026, 15:32", "body": "Sehr geehrte Damen und Herren,\n\nlaut Sendungsverfolgung wurde meine Bestellung NS-260829-7741 gestern an „K. Berger“ zugestellt. In unserem Haus wohnt niemand mit diesem Namen, und auch in den Nachbarhäusern kennt ihn niemand.\n\nDas Paket enthält einen Aktenvernichter im Wert von 239 Euro. Bitte veranlassen Sie umgehend eine Nachforschung. Ich möchte außerdem wissen, ob Sie mir ein Ersatzgerät schicken können, falls das Paket nicht gefunden wird.\n\nMit freundlichen Grüßen\nMehmet Arslan"}];
+let current = 0;
+const listEl = document.getElementById('mailList');
+const subjectEl = document.getElementById('subject');
+const senderEl = document.getElementById('sender');
+const emailEl = document.getElementById('email');
+const dateEl = document.getElementById('date');
+const bodyEl = document.getElementById('body');
+const progressEl = document.getElementById('progress');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+
+function previewText(text) {
+  return text.replace(/\s+/g, ' ').trim().slice(0, 90);
+}
+
+function renderList() {
+  listEl.innerHTML = '';
+  mails.forEach((mail, index) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'mail-item' + (index === current ? ' active' : '');
+    button.setAttribute('aria-label', `${mail.id}: ${mail.subject}`);
+    button.innerHTML = `
+      <div class="item-top">
+        <span class="sender"></span>
+        <span class="mail-id"></span>
+      </div>
+      <div class="subject"></div>
+      <div class="preview"></div>`;
+    button.querySelector('.sender').textContent = mail.sender;
+    button.querySelector('.mail-id').textContent = mail.id;
+    button.querySelector('.subject').textContent = mail.subject;
+    button.querySelector('.preview').textContent = previewText(mail.body);
+    button.addEventListener('click', () => {
+      current = index;
+      render();
+    });
+    listEl.appendChild(button);
+  });
+}
+
+function renderReader() {
+  const mail = mails[current];
+  subjectEl.textContent = mail.subject;
+  senderEl.textContent = `${mail.sender} (${mail.id})`;
+  emailEl.textContent = mail.email;
+  dateEl.textContent = mail.date;
+  bodyEl.textContent = mail.body;
+  progressEl.textContent = `Mail ${current + 1} von ${mails.length}`;
+  prevBtn.disabled = current === 0;
+  nextBtn.disabled = current === mails.length - 1;
+  document.title = `${mail.id} · ${mail.subject}`;
+}
+
+function render() {
+  renderList();
+  renderReader();
+}
+
+prevBtn.addEventListener('click', () => {
+  if (current > 0) { current -= 1; render(); }
+});
+nextBtn.addEventListener('click', () => {
+  if (current < mails.length - 1) { current += 1; render(); }
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'ArrowLeft' && current > 0) { current -= 1; render(); }
+  if (event.key === 'ArrowRight' && current < mails.length - 1) { current += 1; render(); }
+});
+
+render();
+</script>
+</body>
+</html>
